@@ -17,7 +17,7 @@ lazy.nvim:
 
 ```lua
 {
-  "you/mesopic.nvim",
+  "HttoZaid/mesopic.nvim",
   lazy = false,
   priority = 1000,
   config = function()
