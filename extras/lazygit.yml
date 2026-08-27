@@ -1,0 +1,46 @@
+-- mesopic.nvim | lazygit theme (night variant)
+#
+# Two separate cases, and people confuse them constantly:
+#
+#   1. lazygit INSIDE neovim (:terminal, toggleterm, snacks.lazygit)
+#      -> already matches. lua/mesopic/groups/terminal.lua sets
+#         vim.g.terminal_color_0..15 and lazygit renders with those.
+#         Nothing to do here.
+#
+#   2. lazygit in your normal shell, outside neovim
+#      -> lazygit has no idea your editor exists. Merge the block below
+#         into ~/.config/lazygit/config.yml
+#
+# For the day variant, swap in the `photopic` hexes from lua/mesopic/palette.lua.
+
+gui:
+  theme:
+    activeBorderColor:
+      - "#EBB25F"      # keyword gold. the one thing you should look at
+      - bold
+    inactiveBorderColor:
+      - "#3A4048"      # border. deliberately quiet
+    searchingActiveBorderColor:
+      - "#F19B37"      # warn amber, distinct from the active gold
+      - bold
+    optionsTextColor:
+      - "#80C1E1"      # info
+    selectedLineBgColor:
+      - "#333A42"      # sel. background only, so the fg keeps its contrast
+    cherryPickedCommitBgColor:
+      - "#333A42"
+    cherryPickedCommitFgColor:
+      - "#EBB25F"
+    unstagedChangesColor:
+      - "#FC5855"      # err
+    defaultFgColor:
+      - "#DADEE3"      # fg, 12.14:1 on the editor ground
+    optionsBgColor:
+      - "#262B31"
+
+  # the file tree and diffs read better without lazygit's own extra chrome
+  showBottomLine: false
+  nerdFontsVersion: "3"
+
+  authorColors:
+    "*": "#9A9FA5"     # punct. author names are metadata, not signal.
