@@ -38,9 +38,13 @@ function M.get(c, o)
 
     Visual        = { bg = c.sel },
     VisualNOS     = { bg = c.sel },
-    Search        = { fg = c.bg, bg = c.keyword },
-    IncSearch     = { fg = c.bg, bg = c.warn },
-    CurSearch     = { fg = c.bg, bg = c.warn },
+    -- Search is underlined rather than block-inverted. An inverted block is
+    -- the harshest element in most themes and it destroys the shape of the
+    -- word you are trying to read. The current match still inverts, because
+    -- exactly one thing should win.
+    Search        = { fg = c.keyword, bg = c.sel, underline = true },
+    IncSearch     = { fg = c.bg, bg = c.warn, bold = true },
+    CurSearch     = { fg = c.bg, bg = c.warn, bold = true },
     MatchParen    = { fg = c.keyword, bold = true },
 
     Pmenu         = { fg = c.fg, bg = c.surface },
@@ -78,6 +82,8 @@ function M.get(c, o)
 
     ---------------------------------------------------------------------
     -- legacy syntax. neutral by default -- chroma is scarce on purpose.
+    -- In focus mode the palette itself has already had chroma stripped from
+    -- str/type/num/func, so nothing below needs a special case.
     ---------------------------------------------------------------------
     Identifier    = { fg = c.fg },
     Delimiter     = { fg = c.punct },

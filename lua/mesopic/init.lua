@@ -2,10 +2,12 @@
 --
 --   :colorscheme mesopic     -- night
 --   :colorscheme photopic    -- day
+--   :checkhealth mesopic     -- measure the live palette
 --
--- A theme built backwards from how the eye resolves small text. Every colour
--- generated in OKLCH and contrast-measured. README separates what is evidence
--- from what is judgement, including the research that argues against dark mode.
+-- Colours are stored in OKLCH and converted at load, so `intensity` and
+-- `contrast` are perceptual knobs rather than hex nudging. README separates
+-- what is evidence from what is judgement, including the research that
+-- argues against dark mode.
 
 local config     = require("mesopic.config")
 local palette    = require("mesopic.palette")
@@ -32,11 +34,11 @@ function M.load(variant)
   vim.o.termguicolors = true
 
   local v = variant or config.variant()
-  vim.o.background = (v == "day") and "light" or "dark"
+  vim.o.background  = (v == "day") and "light" or "dark"
   vim.g.colors_name = (v == "day") and "photopic" or "mesopic"
 
-  local c = palette.get(v)
   local o = config.options
+  local c = palette.build(v, o)
 
   local groups = vim.tbl_extend("force",
     highlights.get(c, o),
@@ -44,28 +46,46 @@ function M.load(variant)
     o.overrides
   )
 
-  local set = vim.api.nvim_set_hl
   for group, spec in pairs(groups) do
-    set(0, group, spec)
+    vim.api.nvim_set_hl(0, group, spec)
   end
 
   if o.terminal_colors then
     terminal.setup(c)
   end
+
+  vim.api.nvim_exec_autocmds("ColorScheme", { pattern = vim.g.colors_name })
 end
 
---- Toggle between night and day without restarting.
+--- Swap night and day without restarting.
 function M.toggle()
   M.load(vim.g.colors_name == "photopic" and "night" or "day")
 end
 
---- Expose the raw palette, e.g. for a custom statusline.
----@param variant "night"|"day"|nil
-function M.palette(variant)
-  return palette.get(variant or config.variant())
+--- Turn focus mode on or off live. In focus, colour marks only what needs
+--- attention: diagnostics, git state, control flow. Everything else goes quiet.
+---@param on boolean|nil toggles when omitted
+function M.focus(on)
+  if on == nil then on = not config.options.focus end
+  config.options.focus = on
+  M.load()
 end
 
---- lualine theme. Usage:
+--- The built palette for a variant, e.g. for a custom statusline.
+---@param variant "night"|"day"|nil
+---@return table<string,string>
+function M.palette(variant)
+  return palette.build(variant or config.variant(), config.options)
+end
+
+--- Measured contrast of every role against the background.
+---@param variant "night"|"day"|nil
+---@return table<string,number>
+function M.audit(variant)
+  return palette.audit(M.palette(variant))
+end
+
+--- lualine theme:
 ---   require("lualine").setup { options = { theme = require("mesopic").lualine() } }
 function M.lualine()
   local c = M.palette()
