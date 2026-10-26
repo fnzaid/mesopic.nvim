@@ -1,40 +1,55 @@
--- mesopic.nvim | config
-
 local M = {}
+
+---@class MesopicStyles
+---@field comments table
+---@field keywords table
+---@field functions table
+---@field variables table
+---@field strings table
+---@field types table
 
 ---@class MesopicOptions
 M.defaults = {
-  -- "night" | "day" | "auto" (auto follows vim.o.background)
+  -- "night" | "day" | "auto". `auto` follows vim.o.background through the
+  -- `background` map below.
   variant = "auto",
+  background = { dark = "night", light = "day" },
 
-  -- Chroma multiplier, 0.0 to 1.2. Applied in OKLCH, so 0.7 removes about
-  -- the same amount of perceived colour from every hue. Diagnostics are
-  -- exempt: the colour that means "stop" must not fade with the rest.
+  -- Chroma multiplier, 0.0 to 1.2. Diagnostics are exempt.
   intensity = 1.0,
 
-  -- Lightness push away from the background, 1.0 to 1.5. Cannot go below
-  -- 1.0, because that would drop text under the 4.5:1 floor. Add contrast,
-  -- never subtract it.
+  -- Lightness push away from the background, 1.0 to 1.5. Never below 1.0,
+  -- which would drop text under the 4.5:1 floor.
   contrast = 1.0,
 
-  -- Colour marks what needs attention, not what a token is. Strings, types,
-  -- numbers and function names lose their chroma; keywords, diagnostics and
-  -- git state keep theirs. Lightness is untouched, so nothing becomes
-  -- indistinguishable, it just stops competing for your eye.
+  -- Strip chroma from strings, types, numbers and functions. Keywords,
+  -- diagnostics and git state keep theirs. Lightness is untouched.
   focus = false,
 
-  -- Off by default: most terminals have no real monospace italic and slant
-  -- the upright glyphs instead, which hurts small text.
-  italic_comments = false,
+  -- Extra attributes per token class, e.g. { comments = { italic = true } }.
+  -- Everything is upright by default: most terminal fonts fake italics.
+  styles = {
+    comments  = {},
+    keywords  = {},
+    functions = {},
+    variables = {},
+    strings   = {},
+    types     = {},
+  },
 
   dim_inactive = false,
   transparent  = false,
 
-  -- Sets vim.g.terminal_color_0..15. This is what makes lazygit match.
+  -- Sets vim.g.terminal_color_0..15.
   terminal_colors = true,
 
-  -- Per-group overrides, e.g. { Comment = { fg = "#909090" } }.
-  -- These bypass the contrast floors. :checkhealth mesopic will not see them.
+  -- Change palette roles before groups are built: function(c) c.keyword = "#..." end
+  on_colors = function(_) end,
+
+  -- Change or add groups with palette access: function(hl, c) hl.Comment = { fg = c.punct } end
+  on_highlights = function(_, _) end,
+
+  -- Raw per-group overrides applied last. Not contrast-checked by :checkhealth.
   overrides = {},
 }
 
@@ -46,7 +61,12 @@ end
 
 ---@param opts MesopicOptions|nil
 function M.setup(opts)
-  M.options = vim.tbl_deep_extend("force", M.options, opts or {})
+  opts = opts or {}
+  M.options = vim.tbl_deep_extend("force", vim.deepcopy(M.defaults), opts)
+  -- Deprecated alias kept for old configs.
+  if opts.italic_comments then
+    M.options.styles.comments.italic = true
+  end
   M.options.intensity = clamp(M.options.intensity, 0.0, 1.2)
   M.options.contrast  = clamp(M.options.contrast, 1.0, 1.5)
 end
@@ -54,7 +74,7 @@ end
 ---@return "night"|"day"
 function M.variant()
   if M.options.variant == "auto" then
-    return vim.o.background == "light" and "day" or "night"
+    return M.options.background[vim.o.background] or "night"
   end
   return M.options.variant
 end

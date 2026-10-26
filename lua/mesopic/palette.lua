@@ -1,30 +1,21 @@
--- mesopic.nvim | palette
+-- Source of truth is OKLCH { L, C, H }; hex is derived at load so that
+-- `intensity` and `contrast` scale perceptually.
 --
--- Source of truth is OKLCH, not hex. Each entry is { L, C, H }:
---   L  perceptual lightness, 0..1
---   C  chroma
---   H  hue angle in degrees
+-- Four hues carry meaning, everything structural is near-neutral:
+--    75deg  gold    keywords
+--   145deg  sage    strings
+--   205deg  teal    types
+--    15deg  rose    numbers, constants
+-- Diagnostics have their own hues and the highest chroma in the file.
 --
--- Hex is derived at load time so that `intensity` and `contrast` actually
--- mean something. Scaling chroma by 0.8 in OKLCH desaturates every hue by
--- about the same perceived amount; doing the same thing in HSL does not.
---
--- Only four hues carry meaning. Everything structural sits near zero chroma:
---
---    75deg  gold    control flow      the thing you scan for
---   145deg  sage    string data       inert text, not code
---   205deg  teal    types             mid-spectrum, see README on blue
---    15deg  rose    numbers, consts   literals
---
--- Diagnostics get their own hues and are deliberately the highest-chroma
--- values in the file, because they must win the competition for attention.
+-- Roles that share a hue family are staggered in L by at least 0.06 so they
+-- stay apart when hue collapses under protanopia or deuteranopia. The
+-- health check verifies this with simulated vision.
 
 local color = require("mesopic.color")
 
 local M = {}
 
--- Hue of the near-neutral structural ramp. A trace of chroma keeps the greys
--- from reading as dead flat without registering as a colour.
 local NEUTRAL_N = 255
 local NEUTRAL_D = 90
 
@@ -42,31 +33,17 @@ M.raw.night = {
   fg      = { 0.900, 0.008, 250 },
   punct   = { 0.700, 0.010, 250 },
   comment = { 0.645, 0.020, 250 },
+  doc     = { 0.680, 0.040, 250 },
   func    = { 0.880, 0.030, 250 },
 
-  -- The four are separated on L as well as H, on purpose. Two reasons, both
-  -- measured rather than felt:
-  --
-  -- 1. Colour vision has roughly 10x lower spatial resolution than luminance
-  --    for red-green, and 20x lower for blue-yellow (Cavanagh 1991). At code
-  --    font sizes an equiluminant hue change is a boundary your form vision
-  --    can barely resolve. Hue alone is not enough at 13px.
-  --
-  -- 2. Rose (15deg) and teal (205deg) sit near the red/blue axis. Presented
-  --    at equal luminance they trigger chromostereopsis: red appears nearer
-  --    than blue, so tokens drift onto different depth planes. Splitting them
-  --    on L kills it. This matters more on the night variant, because the
-  --    effect grows with pupil size via Stiles-Crawford.
-  --
-  -- Spread is 0.105 in L. Earlier builds had 0.020, which was a mistake.
-  keyword = { 0.820, 0.120,  75 },
+  keyword = { 0.840, 0.120,  75 },
   type    = { 0.790, 0.075, 205 },
-  str     = { 0.755, 0.095, 145 },
-  num     = { 0.715, 0.100,  15 },
+  str     = { 0.770, 0.095, 145 },
+  num     = { 0.700, 0.100,  15 },
 
-  err     = { 0.680, 0.200,  25 },
-  warn    = { 0.760, 0.150,  65 },
-  ok      = { 0.760, 0.110, 150 },
+  err     = { 0.720, 0.190,  25 },
+  warn    = { 0.770, 0.150,  65 },
+  ok      = { 0.820, 0.110, 150 },
   info    = { 0.780, 0.080, 230 },
 
   br_black   = { 0.560, 0.012, NEUTRAL_N },
@@ -90,18 +67,18 @@ M.raw.day = {
 
   fg      = { 0.280, 0.015, 250 },
   punct   = { 0.480, 0.012, 250 },
-  comment = { 0.545, 0.022, 250 },
+  comment = { 0.535, 0.022, 250 },
+  doc     = { 0.500, 0.040, 250 },
   func    = { 0.330, 0.030, 250 },
 
-  -- Same L spread as night, inverted. See the note in the night table.
-  keyword = { 0.430, 0.135,  55 },
+  keyword = { 0.400, 0.135,  55 },
   type    = { 0.470, 0.090, 225 },
-  str     = { 0.498, 0.100, 150 },
+  str     = { 0.480, 0.100, 150 },
   num     = { 0.530, 0.120,  20 },
 
-  err     = { 0.500, 0.200,  25 },
+  err     = { 0.460, 0.200,  25 },
   warn    = { 0.520, 0.140,  60 },
-  ok      = { 0.450, 0.110, 150 },
+  ok      = { 0.400, 0.110, 150 },
   info    = { 0.470, 0.090, 240 },
 
   br_black   = { 0.600, 0.012, NEUTRAL_D },
@@ -114,19 +91,14 @@ M.raw.day = {
   br_white   = { 0.200, 0.015, 250 },
 }
 
--- Roles exempt from the intensity knob. Diagnostics must stay loud even when
--- the rest of the palette is turned down, or the one colour that means "stop"
--- fades into the one that means "string".
+-- Exempt from `intensity`: the colour that means "stop" must not fade.
 local KEEP_CHROMA = { err = true, warn = true }
 
--- Roles that lose their chroma in `focus` mode. In focus, colour stops
--- describing what a token *is* and marks only what needs your attention:
--- diagnostics, git state, and control flow. Everything settled goes quiet.
--- Lightness is untouched, so the tokens stay distinguishable by brightness.
-local FOCUS_DIM = { str = true, type = true, num = true, func = true, info = true, ok = true }
+-- Lose most of their chroma in `focus` mode.
+local FOCUS_DIM = { str = true, type = true, num = true, func = true, info = true, ok = true, doc = true }
 local FOCUS_CHROMA = 0.18
 
--- Structural roles. Pushing these with `contrast` would make the chrome shout.
+-- Not pushed by `contrast`, not audited as text.
 M.structural = {
   bg = true, surface = true, overlay = true, border = true,
   cline = true, sel = true,
@@ -134,12 +106,12 @@ M.structural = {
 
 --- Build a hex palette from the OKLCH source.
 ---@param variant "night"|"day"
----@param opts table|nil { intensity = number, contrast = number }
+---@param opts table|nil { intensity = number, contrast = number, focus = boolean }
 ---@return table<string,string>
 function M.build(variant, opts)
   opts = opts or {}
-  local intensity = opts.intensity or 1.0   -- chroma multiplier
-  local contrast  = opts.contrast  or 1.0   -- lightness push away from bg
+  local intensity = opts.intensity or 1.0
+  local contrast  = opts.contrast  or 1.0
   local focus     = opts.focus or false
   local src  = M.raw[variant] or M.raw.night
   local dark = variant ~= "day"
@@ -156,8 +128,7 @@ function M.build(variant, opts)
     end
 
     if contrast ~= 1.0 and not M.structural[role] then
-      -- Push away from the background: brighter on night, darker on day.
-      -- Scaling the distance from the extreme means nothing can overshoot.
+      -- Scale the distance from the extreme so nothing can overshoot.
       if dark then
         L = 1 - (1 - L) / contrast
       else
@@ -171,7 +142,7 @@ function M.build(variant, opts)
   return out
 end
 
---- Contrast of every text-bearing role against the background.
+--- WCAG contrast of every text-bearing role against the background.
 ---@param p table<string,string> built palette
 ---@return table<string, number>
 function M.audit(p)
@@ -184,10 +155,15 @@ function M.audit(p)
   return report
 end
 
---- Minimum acceptable ratio per role: 4.5 for anything carrying text,
---- 3.0 for structural UI that only needs to be locatable.
+--- Minimum WCAG ratio per role: 4.5 for text, 3.0 for UI that only needs locating.
 M.floors = setmetatable({ gutter = 3.0, br_black = 3.0 }, {
   __index = function() return 4.5 end,
+})
+
+--- Minimum APCA Lc per role. 75 is body text, 60 secondary text, 45 large or
+--- bold text. Advisory: WCAG floors above are the hard gate.
+M.apca_floors = setmetatable({ gutter = 45, br_black = 45, comment = 60, doc = 60 }, {
+  __index = function() return 75 end,
 })
 
 return M

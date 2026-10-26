@@ -1,0 +1,42 @@
+# mesopic.nvim photopic for Alacritty. Generated file, do not edit.
+# Import from alacritty.toml:  import = ["~/.config/alacritty/photopic.toml"]
+
+[colors.primary]
+background = "#F7F5EF"
+foreground = "#232A30"
+
+[colors.cursor]
+cursor = "#232A30"
+text = "#F7F5EF"
+
+[colors.selection]
+background = "#DEDAD1"
+text = "#232A30"
+
+[colors.search.matches]
+background = "#DEDAD1"
+foreground = "#6F3600"
+
+[colors.search.focused_match]
+background = "#9A5500"
+foreground = "#F7F5EF"
+
+[colors.normal]
+black = "#EEEBE4"
+red = "#A80019"
+green = "#005725"
+yellow = "#6F3600"
+blue = "#216188"
+magenta = "#A64B4E"
+cyan = "#006580"
+white = "#232A30"
+
+[colors.bright]
+black = "#838078"
+red = "#940014"
+green = "#085023"
+yellow = "#733800"
+blue = "#004A5F"
+magenta = "#782129"
+cyan = "#005259"
+white = "#11171D"

@@ -1,0 +1,42 @@
+# mesopic.nvim mesopic for WezTerm. Generated file, do not edit.
+# Save under ~/.config/wezterm/colors/ and set color_scheme = "mesopic".
+
+[colors]
+foreground = "#DADEE3"
+background = "#1B2025"
+cursor_bg = "#DADEE3"
+cursor_border = "#DADEE3"
+cursor_fg = "#1B2025"
+selection_bg = "#2D333B"
+selection_fg = "#DADEE3"
+split = "#3A4048"
+scrollbar_thumb = "#70757C"
+
+ansi = ["#262B31", "#FF716B", "#8FD89E", "#F8BF6C", "#80C1E1", "#D5848A", "#7EC9D1", "#DADEE3"]
+brights = ["#70757C", "#FF958D", "#A9DEAA", "#FFCA80", "#A3DDE4", "#FEB9BD", "#ABE0DC", "#EFF2F5"]
+
+[colors.tab_bar]
+background = "#262B31"
+
+[colors.tab_bar.active_tab]
+fg_color = "#DADEE3"
+bg_color = "#1B2025"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#858F9A"
+bg_color = "#262B31"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#DADEE3"
+bg_color = "#30363D"
+
+[colors.tab_bar.new_tab]
+fg_color = "#858F9A"
+bg_color = "#262B31"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#DADEE3"
+bg_color = "#30363D"
+
+[metadata]
+name = "mesopic"

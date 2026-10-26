@@ -1,0 +1,18 @@
+# mesopic.nvim mesopic palette for starship. Generated file, do not edit.
+# Append to starship.toml and set:  palette = "mesopic"
+
+[palettes.mesopic]
+bg = "#1B2025"
+surface = "#262B31"
+border = "#3A4048"
+fg = "#DADEE3"
+punct = "#9A9FA5"
+comment = "#858F9A"
+keyword = "#F8BF6C"
+string = "#8EC58F"
+type = "#7EC9D1"
+number = "#D5848A"
+error = "#FF716B"
+warning = "#F59E3B"
+success = "#8FD89E"
+info = "#80C1E1"

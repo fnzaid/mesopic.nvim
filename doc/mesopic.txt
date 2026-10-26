@@ -1,0 +1,145 @@
+*mesopic.txt*  Two colour schemes for Neovim: mesopic (dark) and photopic (light)
+
+==============================================================================
+CONTENTS                                                     *mesopic-contents*
+
+  1. Introduction ......................................... |mesopic-intro|
+  2. Commands ............................................. |mesopic-commands|
+  3. Options .............................................. |mesopic-options|
+  4. Functions ............................................ |mesopic-functions|
+  5. Health check ......................................... |mesopic-health|
+  6. Extras ............................................... |mesopic-extras|
+
+==============================================================================
+1. INTRODUCTION                                                 *mesopic-intro*
+
+Two colour schemes. Four colours carry meaning: gold for keywords, green for
+strings, teal for types, rose for numbers. Everything else is grey. Errors and
+warnings have their own colours and the highest chroma.
+
+Colours are stored in OKLCH and converted at load. Every colour is tested for
+contrast against the background, with normal vision and with simulated
+protanopia and deuteranopia. See |mesopic-health|.
+
+>vim
+  :colorscheme mesopic     " follows 'background': dark = night, light = day
+  :colorscheme photopic    " light, pinned
+<
+
+`mesopic` follows 'background'. `:set background=light` while `mesopic` is
+active loads the day palette. `photopic` always loads the day palette.
+
+==============================================================================
+2. COMMANDS                                                  *mesopic-commands*
+
+                                                                     *:Mesopic*
+:Mesopic [night|day|toggle|focus]
+        `night` and `day` load that variant. `toggle` swaps them. `focus`
+        turns focus mode on or off. Without an argument, `toggle`.
+
+==============================================================================
+3. OPTIONS                                                    *mesopic-options*
+
+Call `require("mesopic").setup({...})` before `:colorscheme`. Defaults:
+>lua
+  require("mesopic").setup({
+    variant = "auto",            -- "night" | "day" | "auto"
+    background = { dark = "night", light = "day" },
+    intensity = 1.0,             -- 0.0 to 1.2, chroma multiplier
+    contrast = 1.0,              -- 1.0 to 1.5, lightness push from the bg
+    focus = false,
+    styles = {
+      comments = {}, keywords = {}, functions = {},
+      variables = {}, strings = {}, types = {},
+    },
+    dim_inactive = false,
+    transparent = false,
+    terminal_colors = true,
+    on_colors = function(c) end,
+    on_highlights = function(hl, c) end,
+    overrides = {},
+  })
+<
+                                                        *mesopic-option-variant*
+variant         "auto" follows 'background' through the `background` map.
+                "night" or "day" pins the variant.
+
+                                                      *mesopic-option-intensity*
+intensity       Chroma multiplier. Errors and warnings are exempt.
+
+                                                       *mesopic-option-contrast*
+contrast        Pushes text lightness away from the background. Cannot go
+                below 1.0.
+
+                                                          *mesopic-option-focus*
+focus           Strings, types, numbers and function names lose their chroma.
+                Keywords, diagnostics and git signs keep it. Lightness does
+                not change.
+
+                                                         *mesopic-option-styles*
+styles          Extra attributes per token class, for example
+                `{ comments = { italic = true } }`. Everything is upright by
+                default.
+
+                                                      *mesopic-option-on_colors*
+on_colors       Called with the built palette before groups are made.
+                Change roles here: `function(c) c.keyword = "#F2B966" end`.
+
+                                                  *mesopic-option-on_highlights*
+on_highlights   Called with the highlight table and the palette. Change or
+                add groups: `function(hl, c) hl.Comment = { fg = c.punct } end`.
+
+                                                      *mesopic-option-overrides*
+overrides       Raw highlight specs applied last. Not contrast-checked.
+
+==============================================================================
+4. FUNCTIONS                                                *mesopic-functions*
+
+                                                               *mesopic.setup()*
+setup({opts})           Store options. See |mesopic-options|.
+
+                                                                *mesopic.load()*
+load({variant}, {name}) Apply the theme. Used by the colors/ files.
+
+                                                                 *mesopic.set()*
+set({variant})          Load "night" or "day" and fire |ColorScheme|.
+
+                                                              *mesopic.toggle()*
+toggle()                Swap night and day.
+
+                                                               *mesopic.focus()*
+focus({on})             Turn focus mode on, off, or toggle it when {on} is nil.
+
+                                                             *mesopic.palette()*
+palette({variant})      The built palette as a table of hex strings.
+
+                                                               *mesopic.audit()*
+audit({variant})        WCAG contrast of every role against the background.
+
+                                                             *mesopic.lualine()*
+lualine({variant})      A lualine theme table. Also available as
+                        `theme = "mesopic"` or `theme = "photopic"`.
+
+==============================================================================
+5. HEALTH CHECK                                                *mesopic-health*
+
+>vim
+  :checkhealth mesopic
+<
+Prints every role with its WCAG ratio and APCA Lc value against the
+background, for both variants, with normal vision and with simulated
+protanopia and deuteranopia. Floors are 4.5:1 for text and 3:1 for UI lines.
+A warning means one of your options pushed a role under its floor.
+
+==============================================================================
+6. EXTRAS                                                      *mesopic-extras*
+
+`extras/` holds generated themes for kitty, WezTerm, Ghostty, Alacritty,
+foot, Windows Terminal, Xresources, tmux, Zellij, fish, fzf, delta,
+starship and lazygit. They are built from the palette at default options
+with `nvim -l scripts/build.lua`. Do not edit them by hand.
+
+Inside Neovim, lazygit and other terminal programs already match through
+`terminal_colors`.
+
+vim:tw=78:ts=8:ft=help:norl:

@@ -1,0 +1,18 @@
+// mesopic.nvim photopic for Zellij. Generated file, do not edit.
+// Save under ~/.config/zellij/themes/ and set theme "photopic" in config.kdl.
+
+themes {
+    photopic {
+        fg "#232A30"
+        bg "#EEEBE4"
+        black "#F7F5EF"
+        red "#A80019"
+        green "#005725"
+        yellow "#6F3600"
+        blue "#216188"
+        magenta "#A64B4E"
+        cyan "#006580"
+        white "#595E64"
+        orange "#9A5500"
+    }
+}

@@ -1,0 +1,26 @@
+# mesopic.nvim mesopic for Ghostty. Generated file, do not edit.
+# Save under ~/.config/ghostty/themes/mesopic and set theme = mesopic.
+
+palette = 0=#262B31
+palette = 1=#FF716B
+palette = 2=#8FD89E
+palette = 3=#F8BF6C
+palette = 4=#80C1E1
+palette = 5=#D5848A
+palette = 6=#7EC9D1
+palette = 7=#DADEE3
+palette = 8=#70757C
+palette = 9=#FF958D
+palette = 10=#A9DEAA
+palette = 11=#FFCA80
+palette = 12=#A3DDE4
+palette = 13=#FEB9BD
+palette = 14=#ABE0DC
+palette = 15=#EFF2F5
+
+background = #1B2025
+foreground = #DADEE3
+cursor-color = #DADEE3
+cursor-text = #1B2025
+selection-background = #2D333B
+selection-foreground = #DADEE3

@@ -1,0 +1,42 @@
+# mesopic.nvim photopic for WezTerm. Generated file, do not edit.
+# Save under ~/.config/wezterm/colors/ and set color_scheme = "photopic".
+
+[colors]
+foreground = "#232A30"
+background = "#F7F5EF"
+cursor_bg = "#232A30"
+cursor_border = "#232A30"
+cursor_fg = "#F7F5EF"
+selection_bg = "#DEDAD1"
+selection_fg = "#232A30"
+split = "#D4D1C8"
+scrollbar_thumb = "#838078"
+
+ansi = ["#EEEBE4", "#A80019", "#005725", "#6F3600", "#216188", "#A64B4E", "#006580", "#232A30"]
+brights = ["#838078", "#940014", "#085023", "#733800", "#004A5F", "#782129", "#005259", "#11171D"]
+
+[colors.tab_bar]
+background = "#EEEBE4"
+
+[colors.tab_bar.active_tab]
+fg_color = "#232A30"
+bg_color = "#F7F5EF"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#646F7A"
+bg_color = "#EEEBE4"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#232A30"
+bg_color = "#E4E1D9"
+
+[colors.tab_bar.new_tab]
+fg_color = "#646F7A"
+bg_color = "#EEEBE4"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#232A30"
+bg_color = "#E4E1D9"
+
+[metadata]
+name = "photopic"

@@ -1,0 +1,99 @@
+# mesopic.nvim for lazygit. Generated file, do not edit.
+# Merge into ~/.config/lazygit/config.yml. darkTheme and lightTheme are
+# picked from the terminal background. authorColors is deliberately one
+# colour: author names are metadata, not signal.
+
+gui:
+  theme:
+    activeBorderColor:
+      - "#F8BF6C"
+      - bold
+    inactiveBorderColor:
+      - "#3A4048"
+    searchingActiveBorderColor:
+      - "#F59E3B"
+      - bold
+    optionsTextColor:
+      - "#80C1E1"
+    selectedLineBgColor:
+      - "#2D333B"
+    selectedLineFgColor:
+      - default
+    inactiveViewSelectedLineBgColor:
+      - "#23282E"
+    cherryPickedCommitBgColor:
+      - "#2D333B"
+    cherryPickedCommitFgColor:
+      - "#F8BF6C"
+    markedBaseCommitBgColor:
+      - "#2D333B"
+    markedBaseCommitFgColor:
+      - "#80C1E1"
+    unstagedChangesColor:
+      - "#FF716B"
+    defaultFgColor:
+      - "#DADEE3"
+    authorColors:
+      "*": "#9A9FA5"
+  darkTheme:
+    activeBorderColor:
+      - "#F8BF6C"
+      - bold
+    inactiveBorderColor:
+      - "#3A4048"
+    searchingActiveBorderColor:
+      - "#F59E3B"
+      - bold
+    optionsTextColor:
+      - "#80C1E1"
+    selectedLineBgColor:
+      - "#2D333B"
+    selectedLineFgColor:
+      - default
+    inactiveViewSelectedLineBgColor:
+      - "#23282E"
+    cherryPickedCommitBgColor:
+      - "#2D333B"
+    cherryPickedCommitFgColor:
+      - "#F8BF6C"
+    markedBaseCommitBgColor:
+      - "#2D333B"
+    markedBaseCommitFgColor:
+      - "#80C1E1"
+    unstagedChangesColor:
+      - "#FF716B"
+    defaultFgColor:
+      - "#DADEE3"
+    authorColors:
+      "*": "#9A9FA5"
+  lightTheme:
+    activeBorderColor:
+      - "#6F3600"
+      - bold
+    inactiveBorderColor:
+      - "#D4D1C8"
+    searchingActiveBorderColor:
+      - "#9A5500"
+      - bold
+    optionsTextColor:
+      - "#216188"
+    selectedLineBgColor:
+      - "#DEDAD1"
+    selectedLineFgColor:
+      - default
+    inactiveViewSelectedLineBgColor:
+      - "#F1EFE8"
+    cherryPickedCommitBgColor:
+      - "#DEDAD1"
+    cherryPickedCommitFgColor:
+      - "#6F3600"
+    markedBaseCommitBgColor:
+      - "#DEDAD1"
+    markedBaseCommitFgColor:
+      - "#216188"
+    unstagedChangesColor:
+      - "#A80019"
+    defaultFgColor:
+      - "#232A30"
+    authorColors:
+      "*": "#595E64"

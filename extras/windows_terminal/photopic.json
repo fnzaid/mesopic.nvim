@@ -1,0 +1,23 @@
+{
+  "name": "photopic",
+  "background": "#F7F5EF",
+  "foreground": "#232A30",
+  "cursorColor": "#232A30",
+  "selectionBackground": "#DEDAD1",
+  "black": "#EEEBE4",
+  "red": "#A80019",
+  "green": "#005725",
+  "yellow": "#6F3600",
+  "blue": "#216188",
+  "purple": "#A64B4E",
+  "cyan": "#006580",
+  "white": "#232A30",
+  "brightBlack": "#838078",
+  "brightRed": "#940014",
+  "brightGreen": "#085023",
+  "brightYellow": "#733800",
+  "brightBlue": "#004A5F",
+  "brightPurple": "#782129",
+  "brightCyan": "#005259",
+  "brightWhite": "#11171D"
+}

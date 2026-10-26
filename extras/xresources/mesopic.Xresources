@@ -1,0 +1,22 @@
+! mesopic.nvim mesopic Xresources. Generated file, do not edit.
+
+*.background:  #1B2025
+*.foreground:  #DADEE3
+*.cursorColor: #DADEE3
+
+*.color0:  #262B31
+*.color1:  #FF716B
+*.color2:  #8FD89E
+*.color3:  #F8BF6C
+*.color4:  #80C1E1
+*.color5:  #D5848A
+*.color6:  #7EC9D1
+*.color7:  #DADEE3
+*.color8:  #70757C
+*.color9:  #FF958D
+*.color10: #A9DEAA
+*.color11: #FFCA80
+*.color12: #A3DDE4
+*.color13: #FEB9BD
+*.color14: #ABE0DC
+*.color15: #EFF2F5

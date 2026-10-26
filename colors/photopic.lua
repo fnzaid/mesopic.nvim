@@ -1,2 +1,2 @@
--- day variant. `:colorscheme photopic`
-require("mesopic").load("day")
+-- Day variant, pinned.
+require("mesopic").load("day", "photopic")

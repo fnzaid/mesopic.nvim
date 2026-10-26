@@ -1,0 +1,23 @@
+{
+  "name": "mesopic",
+  "background": "#1B2025",
+  "foreground": "#DADEE3",
+  "cursorColor": "#DADEE3",
+  "selectionBackground": "#2D333B",
+  "black": "#262B31",
+  "red": "#FF716B",
+  "green": "#8FD89E",
+  "yellow": "#F8BF6C",
+  "blue": "#80C1E1",
+  "purple": "#D5848A",
+  "cyan": "#7EC9D1",
+  "white": "#DADEE3",
+  "brightBlack": "#70757C",
+  "brightRed": "#FF958D",
+  "brightGreen": "#A9DEAA",
+  "brightYellow": "#FFCA80",
+  "brightBlue": "#A3DDE4",
+  "brightPurple": "#FEB9BD",
+  "brightCyan": "#ABE0DC",
+  "brightWhite": "#EFF2F5"
+}

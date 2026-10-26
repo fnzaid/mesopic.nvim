@@ -1,0 +1,26 @@
+# mesopic.nvim mesopic for delta. Generated file, do not edit.
+# Include from ~/.gitconfig:
+#   [include]
+#       path = ~/.config/delta/mesopic.gitconfig
+#   [delta]
+#       features = mesopic
+
+[delta "mesopic"]
+    dark = true
+    line-numbers = true
+    minus-style = syntax "#6F3637"
+    minus-emph-style = syntax "#974544"
+    plus-style = syntax "#405F49"
+    plus-emph-style = syntax "#55805F"
+    zero-style = syntax
+    line-numbers-minus-style = "#FF716B"
+    line-numbers-plus-style = "#8FD89E"
+    line-numbers-zero-style = "#70757C"
+    line-numbers-left-style = "#3A4048"
+    line-numbers-right-style = "#3A4048"
+    file-style = "#F8BF6C" bold
+    file-decoration-style = "#3A4048" ul
+    hunk-header-style = file line-number syntax
+    hunk-header-decoration-style = "#3A4048" box
+    commit-decoration-style = "#F8BF6C" box ul
+    whitespace-error-style = "#1B2025" "#FF716B"

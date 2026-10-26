@@ -1,0 +1,42 @@
+# mesopic.nvim mesopic for Alacritty. Generated file, do not edit.
+# Import from alacritty.toml:  import = ["~/.config/alacritty/mesopic.toml"]
+
+[colors.primary]
+background = "#1B2025"
+foreground = "#DADEE3"
+
+[colors.cursor]
+cursor = "#DADEE3"
+text = "#1B2025"
+
+[colors.selection]
+background = "#2D333B"
+text = "#DADEE3"
+
+[colors.search.matches]
+background = "#2D333B"
+foreground = "#F8BF6C"
+
+[colors.search.focused_match]
+background = "#F59E3B"
+foreground = "#1B2025"
+
+[colors.normal]
+black = "#262B31"
+red = "#FF716B"
+green = "#8FD89E"
+yellow = "#F8BF6C"
+blue = "#80C1E1"
+magenta = "#D5848A"
+cyan = "#7EC9D1"
+white = "#DADEE3"
+
+[colors.bright]
+black = "#70757C"
+red = "#FF958D"
+green = "#A9DEAA"
+yellow = "#FFCA80"
+blue = "#A3DDE4"
+magenta = "#FEB9BD"
+cyan = "#ABE0DC"
+white = "#EFF2F5"

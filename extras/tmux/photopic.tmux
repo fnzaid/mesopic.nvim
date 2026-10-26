@@ -1,0 +1,20 @@
+# mesopic.nvim photopic for tmux. Generated file, do not edit.
+# Source from tmux.conf:  source-file ~/.config/tmux/photopic.tmux
+
+set -g mode-style "fg=#6F3600,bg=#DEDAD1"
+set -g message-style "fg=#232A30,bg=#EEEBE4"
+set -g message-command-style "fg=#232A30,bg=#EEEBE4"
+set -g pane-border-style "fg=#D4D1C8"
+set -g pane-active-border-style "fg=#6F3600"
+set -g status "on"
+set -g status-justify "left"
+set -g status-style "fg=#595E64,bg=#EEEBE4"
+set -g status-left-length "100"
+set -g status-right-length "100"
+set -g status-left "#[fg=#F7F5EF,bg=#6F3600,bold] #S #[fg=#6F3600,bg=#EEEBE4,nobold] "
+set -g status-right "#[fg=#646F7A,bg=#EEEBE4] %Y-%m-%d  %H:%M #[fg=#F7F5EF,bg=#6F3600,bold] #h "
+setw -g window-status-activity-style "underscore,fg=#9A5500,bg=#EEEBE4"
+setw -g window-status-separator ""
+setw -g window-status-style "NONE,fg=#646F7A,bg=#EEEBE4"
+setw -g window-status-format "#[fg=#646F7A,bg=#EEEBE4] #I #W #F "
+setw -g window-status-current-format "#[fg=#232A30,bg=#F7F5EF,bold] #I #W #F "

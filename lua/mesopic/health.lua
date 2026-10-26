@@ -1,10 +1,9 @@
--- mesopic.nvim | :checkhealth mesopic
---
--- Measures the live palette rather than a table in the README, so your
--- intensity and contrast settings are what actually gets checked.
+-- :checkhealth mesopic. Measures the live palette with the user's options,
+-- with normal vision and with simulated protanopia and deuteranopia.
 
 local palette = require("mesopic.palette")
 local config  = require("mesopic.config")
+local color   = require("mesopic.color")
 
 local M = {}
 
@@ -12,6 +11,46 @@ local start = vim.health.start or vim.health.report_start
 local ok    = vim.health.ok or vim.health.report_ok
 local warn  = vim.health.warn or vim.health.report_warn
 local info  = vim.health.info or vim.health.report_info
+
+local function sorted_roles(report)
+  local roles = {}
+  for role in pairs(report) do
+    if not role:match("^br_") then roles[#roles + 1] = role end
+  end
+  table.sort(roles, function(a, b) return report[a] < report[b] end)
+  return roles
+end
+
+--- Audit one palette under one kind of vision. Returns the failure count.
+local function audit(p, vision)
+  local sim = function(hex)
+    return vision == "normal" and hex or color.simulate(hex, vision)
+  end
+  local bg = sim(p.bg)
+
+  local report = {}
+  for role, hex in pairs(p) do
+    if not palette.structural[role] then
+      report[role] = color.contrast(sim(hex), bg)
+    end
+  end
+
+  local failures = 0
+  for _, role in ipairs(sorted_roles(report)) do
+    local ratio = report[role]
+    local floor = palette.floors[role]
+    local lc    = color.apca(sim(p[role]), bg)
+    local line  = ("%-8s %s  %5.2f:1  Lc %3.0f  (floor %.1f:1, Lc %d)")
+      :format(role, p[role], ratio, lc, floor, palette.apca_floors[role])
+    if ratio < floor then
+      warn(line)
+      failures = failures + 1
+    elseif vision == "normal" then
+      info(line)
+    end
+  end
+  return failures
+end
 
 function M.check()
   start("mesopic.nvim")
@@ -28,34 +67,25 @@ function M.check()
     :format(config.variant(), o.intensity, o.contrast, tostring(o.focus)))
 
   for _, variant in ipairs({ "night", "day" }) do
-    start("contrast: " .. variant)
-
     local p = palette.build(variant, o)
-    local report = palette.audit(p)
+    o.on_colors(p)
 
-    local roles = {}
-    for role in pairs(report) do
-      if not role:match("^br_") then roles[#roles + 1] = role end
-    end
-    table.sort(roles, function(a, b) return report[a] < report[b] end)
-
-    local failures = 0
-    for _, role in ipairs(roles) do
-      local ratio = report[role]
-      local floor = palette.floors[role]
-      local line = ("%-9s %s  %5.2f:1  (floor %.1f)"):format(role, p[role], ratio, floor)
-      if ratio < floor then
-        warn(line)
-        failures = failures + 1
-      else
-        info(line)
-      end
-    end
-
+    start("contrast: " .. variant)
+    local failures = audit(p, "normal")
     if failures == 0 then
-      ok(("all %d roles clear their contrast floor against %s"):format(#roles, p.bg))
+      ok(("all roles clear their WCAG floor against %s"):format(p.bg))
     else
       warn(("%d role(s) below floor -- lower `intensity` or raise `contrast`"):format(failures))
+    end
+
+    for _, vision in ipairs({ "protan", "deutan" }) do
+      start(("contrast: %s, simulated %s"):format(variant, vision))
+      failures = audit(p, vision)
+      if failures == 0 then
+        ok("all roles clear their floor under simulated " .. vision .. " vision")
+      else
+        warn(("%d role(s) below floor under simulated %s vision"):format(failures, vision))
+      end
     end
   end
 
